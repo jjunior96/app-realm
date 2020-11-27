@@ -8,6 +8,15 @@ import Repository from '../../components/Repository';
 
 import * as S from './styles';
 
+interface RepositoryProps {
+  id: string;
+  name: string;
+  full_name: string;
+  description: string;
+  stargazers_count: string;
+  forks_count: string;
+}
+
 const Main: React.FC = () => {
   const renderItem = ({}) => (
     <Repository name="Test" stars="123" forks="123" description="dest" />
@@ -21,7 +30,9 @@ const Main: React.FC = () => {
     async function loadRepositories() {
       const realm = await getRealm();
 
-      const data = realm.objects('Repository').sorted('stars', true);
+      const data: Realm.Results<Realm.Object> = realm
+        .objects('Repository')
+        .sorted('stars', true);
 
       setRepositories(data);
     }
@@ -29,7 +40,7 @@ const Main: React.FC = () => {
     loadRepositories();
   }, []);
 
-  async function saveRepository(repository) {
+  async function saveRepository(repository: RepositoryProps) {
     const data = {
       id: repository.id,
       name: repository.name,
